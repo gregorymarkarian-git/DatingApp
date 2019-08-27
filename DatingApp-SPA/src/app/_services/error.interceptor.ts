@@ -5,18 +5,21 @@ import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return  next.handle(req).pipe(
-        catchError(error => {
-            if (error instanceof HttpErrorResponse) {
-                const applicationError = error.headers.get('Application-Error');
-                if (applicationError) {
-                    console.error(applicationError);
-                    return throwError(applicationError);
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        return  next.handle(req).pipe(
+            catchError(error => {
+                if (error instanceof HttpErrorResponse) {
+                    const applicationError = error.headers.get('Application-Error');
+                    if (applicationError) {
+                        console.error(applicationError);
+                        return throwError(applicationError);
+                    }
+                    // const serverError = error.error;
+                    // let modelstateErrors ='';
+                    // if(serverError)
                 }
-            }
-        })
-    );
+            })
+        );
  }
 }
 export const ErrorInterceptorProvider = {
